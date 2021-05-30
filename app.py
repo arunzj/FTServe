@@ -19,8 +19,8 @@ mysql = MySQL(app)
 
 
 #Login Form (Main)
-@app.route('/',methods=['GET','POST'])
-def index():
+@app.route('/login',methods=['GET','POST'])
+def login():
     if request.method == 'POST':
         username=request.form['username']
         password=request.form['password']
@@ -35,8 +35,8 @@ def index():
                 #if it is service
                 if record['type'] == 'service':
                     session['type'] = record['type']
-                    session['user_name']=username
-                    return redirect(url_for('table'))
+                    session['user_name']=username 
+                    return redirect(url_for('service'))
                 elif record['type'] == 'chef':
                     session['type'] = record['type']
                     session['user_name']=username
@@ -55,9 +55,34 @@ def index():
 
             return 'no user'
  
-
     return render_template('index.html')
 
+@app.route('/',methods=['GET'])
+def index():
+    return redirect(url_for('login'))
+
+
+@app.route('/catalogue/tableid/<int:table_ID>/code/<string:code>',methods=['GET'])
+def table(table_ID,code):
+    cur=mysql.connection.cursor()
+    results = cur.execute("SELECT * FROM tables WHERE table_ID= %s",[table_ID])
+    if results>0:
+        result = cur.fetchone()
+        if code == result['code']:
+             return redirect(url_for('catalogue',id='starter'))
+    else:
+        return "Invalid url ....!"
+
+@app.route('/catalogue/category/<string:id>',methods=['GET'])
+def catalogue(id,msg=None):
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from items where category=%s",[id])
+    items=cur.fetchall()
+    return render_template('catalogue/catalogue.html',items=items,msg=msg)
+
+@app.route('/service',methods=['GET'])
+def service():
+    return render_template('service/service_hompage.html')
 
 #main
 if __name__ == '__main__':
