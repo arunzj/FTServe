@@ -82,7 +82,11 @@ def catalogue(id,msg=None):
 
 @app.route('/service',methods=['GET'])
 def service():
-    return render_template('service/service_hompage.html')
+    cur=mysql.connection.cursor()
+    result = cur.execute(" SELECT o.order_ID,i.name,t.table_ID,o.status,o.quantity FROM customers c INNER JOIN orders o ON c.customer_ID=o.customer_ID INNER JOIN  tables t ON c.table_ID=t.table_ID INNER JOIN items i ON o.item_ID=i.item_ID WHERE c.status='AC' and o.status!='SRVD' ")
+    orders=cur.fetchall()
+    return render_template('service/service_hompage.html',orders=orders)
+
 
 #main
 if __name__ == '__main__':
