@@ -13,7 +13,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="#active-orders">FT-Serve</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
@@ -28,7 +28,7 @@
 <div class="container bootstrap snippets bootdey">
     <div class="row">
         <div class="col-sm-10">
-            <h1>User name</h1></div>
+            <h1>{{session['user_name']}}</h1></div>
         <div class="col-sm-2">
             <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="/static/images/profile/avatar1.png"></a>
         </div>
@@ -39,9 +39,9 @@
 
             <ul class="list-group">
                 <li class="list-group-item text-muted">Profile</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{user.date_joined}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span>{{user.name}}</li>
 
             </ul>
 
@@ -70,13 +70,13 @@
         <div class="col-sm-9">
 
             <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#home" data-toggle="tab">Active Orders</a></li>
-                <li><a href="#messages" data-toggle="tab">Messages</a></li>
-                <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                <li class="active"><a href="#active-orders" data-toggle="tab">Active Orders</a></li>
+                <li><a href="#active-customers"  data-toggle="tab">Active Customers</a></li>
             </ul>
 
         <div class="tab-content">
-            <div class="tab-pane active" id="home">
+            <!--start of tab Active Cutomers-->
+            <div class="tab-pane active" id="active-orders">
                 <div class="table-responsive">
 <table class="table table-hover">
     <thead>
@@ -91,7 +91,7 @@
     <tbody>
       {%for order in orders%}
       <tr>
-        <td>0{{order.order_ID}}</td>
+        <td>00{{order.order_ID}}</td>
         <td>{{order.name}}</td>
         <td>0{{order.quantity}}</td>
         <td>T0{{order.table_ID}}</td>
@@ -121,22 +121,45 @@
 
                 </div>
                 <!--/tab-pane-->
-                <div class="tab-pane" id="messages">
-
-                    <h2></h2>
-
-                    <ul class="list-group">
-                        <li class="list-group-item text-muted">Inbox</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Here is your a link to the latest summary report from the..</a> 2.13.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Hi Joe, There has been a request on your account since that was..</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Nullam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Thllam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">For therepien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Also we, havesapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Swedish chef is assaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-
-                    </ul>
+                <!--start of tab active customers-->
+                <div class="tab-pane" id="active-customers">
+                    <div class="tab-pane active" id="active-customers">
+                        <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Table ID</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for customer in customers%}
+              <tr>
+                <td>00{{customer.customer_ID}}</td>
+                <td>T0{{customer.table_ID}}</td>
+                {% if customer.status=='AC'%}
+                <td>Active</td>
+                {%else%}
+                <td>Inactive</td>
+                {%endif%}
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4 col-md-offset-4 text-center">
+                                        <ul class="pagination" id="myPager"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/table-resp-->
+        
+                            <hr>
+        
+                        </div>
+                   
 
                 </div>
                 <!--/tab-pane-->

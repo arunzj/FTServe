@@ -35,7 +35,7 @@ def login():
                 #if it is service
                 if record['type'] == 'service':
                     session['type'] = record['type']
-                    session['user_name']=username 
+                    session['user_name']=username
                     return redirect(url_for('service'))
                 elif record['type'] == 'chef':
                     session['type'] = record['type']
@@ -85,7 +85,11 @@ def service():
     cur=mysql.connection.cursor()
     result = cur.execute(" SELECT o.order_ID,i.name,t.table_ID,o.status,o.quantity FROM customers c INNER JOIN orders o ON c.customer_ID=o.customer_ID INNER JOIN  tables t ON c.table_ID=t.table_ID INNER JOIN items i ON o.item_ID=i.item_ID WHERE c.status='AC' and o.status!='SRVD' ")
     orders=cur.fetchall()
-    return render_template('service/service_hompage.html',orders=orders)
+    result = cur.execute("SELECT * FROM users")
+    user=cur.fetchone()
+    result = cur.execute("SELECT * FROM customers WHERE status='AC'")
+    customers=cur.fetchall()
+    return render_template('service/service_hompage.html',orders=orders,user=user,customers=customers)
 
 
 #main
