@@ -62,34 +62,29 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/catalogue/tableid/<int:table_ID>/code/<string:code>',methods=['GET'])
-def table(table_ID,code):
-    cur=mysql.connection.cursor()
-    results = cur.execute("SELECT * FROM tables WHERE table_ID= %s",[table_ID])
-    if results>0:
-        result = cur.fetchone()
-        if code == result['code']:
-             return redirect(url_for('catalogue',id='starter'))
-    else:
-        return "Invalid url ....!"
-
 @app.route('/catalogue/category/<string:id>',methods=['GET'])
-def catalogue(id,msg=None):
+def menu(id):
     cur = mysql.connection.cursor()
     result=cur.execute("select * from items where category=%s",[id])
     items=cur.fetchall()
-    return render_template('catalogue/catalogue.html',items=items,msg=msg)
+    return render_template('catalogue/catalogue.html',items=items)
+
+@app.route('/catalogue/category',methods=['GET'])
+def menu_default():
+    return redirect(url_for('menu',id='starter'))
 
 @app.route('/service',methods=['GET'])
 def service():
     cur=mysql.connection.cursor()
     result = cur.execute(" SELECT o.order_ID,i.name,t.table_ID,o.status,o.quantity FROM customers c INNER JOIN orders o ON c.customer_ID=o.customer_ID INNER JOIN  tables t ON c.table_ID=t.table_ID INNER JOIN items i ON o.item_ID=i.item_ID WHERE c.status='AC' and o.status!='SRVD' ")
     orders=cur.fetchall()
-    result = cur.execute("SELECT * FROM users")
+    result = cur.execute("SELECT * FROM users WHERE user_name=%s",[session['user_name']])
     user=cur.fetchone()
     result = cur.execute("SELECT * FROM customers WHERE status='AC'")
     customers=cur.fetchall()
-    return render_template('service/service_hompage.html',orders=orders,user=user,customers=customers)
+    result=cur.execute("SELECT COUNT(*) count FROM orders WHERE status='SRVD'")
+    serv_order=cur.fetchone()
+    return render_template('service/service_hompage.html',orders=orders,user=user,customers=customers,serv_order=serv_order)
 
 
 #main

@@ -62,6 +62,21 @@
             <h5>$ {{item.price}}</h5>
             <p class="card-text">{{item.description}}</p>
           </div>
+          {% if msg %}
+          <div class="alert alert-success">{{msg}}</div>
+          {% endif %}
+          <div id="{{item.item_ID}}" style="display:none;">
+          <form method="post" action="/customer/category/additem">
+              <input name="category" type="hidden" value="{{item.category}}"> 
+              <input name="item_price" type="hidden" value="{{item.price}}">
+              <input name="item_added" type="hidden" value="{{item.item_ID}}">
+              <input placeholder="Enter Quantity" type="number" name="quan">
+              <br/>              
+              <br/>
+              <input type="submit" class="btn btn-primary">
+
+          </form>
+        </div>
           <div class="card-footer">
             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
           </div>

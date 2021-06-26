@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Service</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="static/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="static/service_hom/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="/static/images/favicon.png">
-<!--     <link href="/static/css/shop-homepage.css" rel="stylesheet"> -->
+    <!-- <link href="/static/service_hom/service-homepage.css" rel="stylesheet"> -->
 </head>
 <body>
 <!-- navbar start-->
@@ -40,7 +40,7 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">Profile</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{user.date_joined}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Orders Served</strong></span> {{serv_order.count}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span>{{user.name}}</li>
 
             </ul>
@@ -90,6 +90,7 @@
     </thead>
     <tbody>
       {%for order in orders%}
+      
       <tr>
         <td>00{{order.order_ID}}</td>
         <td>{{order.name}}</td>
@@ -99,12 +100,20 @@
         <td>Preparing</td>
         {% elif order.status=='PRPD'%}
         <td>Prepared</td>
-        {%elif order.status=='TKN'%}
-        <td>Ordered</td>
+        {%elif order.status=='OTKN'%}
+        <td>Order Taken</td>
         {%else%}
         <td>{{order.status}}</td>
         {%endif%}
+        {%if order.status=='PRPD'%}
+        <td><button type="button" class="btn btn-success btn-sm">Mark Served</button></td>
+        {%elif order.status=='OTKN'%}
+        <td><button type="button" class="btn btn-danger btn-sm">Cancel Order</button></td>
+        {%else%}
+        <td></td>
+        {%endif%}
       </tr>
+    
       {%endfor%}
     </tbody>
   </table>
@@ -255,11 +264,6 @@
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	                        
-
-                        
-
-              	  
-                                                      
 </script>
 </body>
 </html>
