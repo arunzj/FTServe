@@ -8,8 +8,8 @@
 
     <div class="col-lg-3">
 
-      <h5 class="my-4 list-group-item">Table <span style="color:crimson">{{session['table_no']}}</span></h5>
-      <h5 class="my-4 list-group-item">Customer <span style="color:green">{{session['cusid']}}</span></h5>
+      <h5 class="my-4 list-group-item">Table <span style="color:crimson">{{customer.customer_ID}}</span></h5>
+      <h5 class="my-4 list-group-item">Customer <span style="color:green">{{customer.table_ID}}</span></h5>
       <div class="list-group">
         
         <a href="/customer/category/starter" class="list-group-item">STARTERS</a>
@@ -66,17 +66,16 @@
           <div class="alert alert-success">{{msg}}</div>
           {% endif %}
           <div id="{{item.item_ID}}" style="display:none;">
-          <form method="post" action="/customer/category/additem">
-              <input name="category" type="hidden" value="{{item.category}}"> 
-              <input name="item_price" type="hidden" value="{{item.price}}">
-              <input name="item_added" type="hidden" value="{{item.item_ID}}">
-              <input placeholder="Enter Quantity" type="number" name="quan">
-              <br/>              
-              <br/>
-              <input type="submit" class="btn btn-primary">
-
-          </form>
-        </div>
+            <form method="post" action="/service/newOrder/customerID/{{customer.customer_ID}}">
+                <input name="category" type="hidden" value="{{item.category}}"> 
+                <input name="item_price" type="hidden" value="{{item.price}}">
+                <input name="item_ID" type="hidden" value="{{item.item_ID}}">
+                <input placeholder="Enter Quantity" type="number" name="quan">
+                <br/>              
+                <br/>
+                <input type="submit" class="btn btn-primary">
+            </form>
+          </div>
           <div class="card-footer">
             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
           </div>

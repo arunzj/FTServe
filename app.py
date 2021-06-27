@@ -1,6 +1,8 @@
+from typing import ItemsView
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 #from data import Articles
 from flask_mysqldb import MySQL
+from werkzeug.utils import html
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
@@ -86,6 +88,29 @@ def service():
     serv_order=cur.fetchone()
     return render_template('service/service_hompage.html',orders=orders,user=user,customers=customers,serv_order=serv_order)
 
+@app.route('/service/newOrder/customerID/<string:id>',methods=['GET','POST'])
+def new_order(id,msg=None):
+    cur = mysql.connection.cursor()
+    if request.method=='GET':
+        result=cur.execute("select * from items where category='starter' ")
+        items=cur.fetchall()
+        result=cur.execute("select * from customers where customer_ID=%s",[id])
+        customer=cur.fetchone()
+        return render_template('/service/new_order/catalogue.html',items=items,customer=customer,msg=msg)
+    else:
+        item_ID=request.form['item_ID']
+        quantity=request.form['quan']
+        sql = "INSERT INTO orders (item_ID, quantity, customer_ID) VALUES (%s, %s,%s)"
+        para = (item_ID,quantity,id)
+        cur.execute(sql, para)
+        mysql.connection.commit()
+        return redirect(url_for('new_order',id=id,msg='Success'))
+
+# api for info
+@app.route('/getVacantTables')
+def vacant_tables():
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from tables where status='VA' ")
 
 #main
 if __name__ == '__main__':

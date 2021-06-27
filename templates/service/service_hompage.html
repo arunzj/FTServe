@@ -20,10 +20,41 @@
       <li><a href="#">Link</a></li>
       <li><a href="#">Link</a></li>
     </ul>
-    <button class="btn btn-danger navbar-btn">Button</button>
+    <button id="new_cus_btn" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#customer_modal">New Customer</button>
   </div>
 </nav>
 <!-- navbar end-->
+<!--Modal begining-->
+<div class="modal fade" id="customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customer_modal_title"><b>Add New Customer</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group" style="width:100px">
+                <label for="exampleFormControlSelect1">Select Table</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Modal end-->
+
 <hr>
 <div class="container bootstrap snippets bootdey">
     <div class="row">
@@ -110,7 +141,7 @@
         {%elif order.status=='OTKN'%}
         <td><button type="button" class="btn btn-danger btn-sm">Cancel Order</button></td>
         {%else%}
-        <td></td>
+        <td><button type="button" class="btn btn-info btn-sm">Check Status</button></td></td>
         {%endif%}
       </tr>
     
@@ -144,7 +175,7 @@
             </thead>
             <tbody>
               {%for customer in customers%}
-              <tr>
+              <tr id='{{customer.customer_ID}}' class="act_cust">
                 <td>00{{customer.customer_ID}}</td>
                 <td>T0{{customer.table_ID}}</td>
                 {% if customer.status=='AC'%}
@@ -263,7 +294,22 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	                        
+$(document).ready(function(){
+	     $(".act_cust").click(function(){
+            var id = $(this).attr('id');
+            var url = '/service/newOrder/customerID/'+id;
+            location.href=url;
+
+         });
+         $("#new_cus_btn").click(function(){
+         $.ajax({url: "/getVacantTables", success: function(result){
+
+
+            }});
+            
+});
+         
+        });
 </script>
 </body>
 </html>
