@@ -1,0 +1,6 @@
+Master username
+admin
+Master password
+04812340484
+Endpoint
+mysql-instance1.ctrffvygguml.us-east-1.rds.amazonaws.com
