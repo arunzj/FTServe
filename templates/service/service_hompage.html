@@ -36,13 +36,10 @@
         </div>
         <div class="modal-body">
             <div class="form-group" style="width:100px">
-                <label for="exampleFormControlSelect1">Select Table</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <label for="add-customer-modal">Select Table</label>
+                <select class="form-control" id="add-cust-dropdown">
+                    
+
                 </select>
               </div>
         </div>
@@ -294,6 +291,7 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
 	     $(".act_cust").click(function(){
             var id = $(this).attr('id');
@@ -301,15 +299,24 @@ $(document).ready(function(){
             location.href=url;
 
          });
-         $("#new_cus_btn").click(function(){
-         $.ajax({url: "/getVacantTables", success: function(result){
-
+         $('#new_cus_btn').click(function(){
+            $.ajax({url: "/getVacantTables", success: function(result){
+                data=JSON.parse(result)
+                let element=''
+                data.forEach(function (item) {
+                    element=element+" <option>"+item.table_ID+"</option> "
+                });
+                $('#add-cust-dropdown').html(element)
 
             }});
-            
-});
-         
+
         });
+
+
+        //  document end
+        });
+
+
 </script>
 </body>
 </html>

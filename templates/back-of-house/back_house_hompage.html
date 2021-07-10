@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/service_hom/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.png">
+    <!-- <link href="/static/service_hom/service-homepage.css" rel="stylesheet"> -->
+</head>
+
+<body>
+    <!-- navbar start-->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#active-orders">FT-Serve</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+            <button id="new_cus_btn" class="btn btn-success navbar-btn" data-toggle="modal"
+                data-target="#main_modal">Add New Item</button>
+        </div>
+    </nav>
+    <!-- navbar end-->
+    <!--Modal begining-->
+    <div class="modal fade" id="main_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title"><b>Add New Customer</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" style="width:100px">
+                        <label for="add-customer-modal">Select Table</label>
+                        <select class="form-control" id="add-cust-dropdown">
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal end-->
+
+    <hr>
+    <div class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-sm-10">
+                <h1>{{session['user_name']}}</h1>
+            </div>
+            <div class="col-sm-2">
+                <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive"
+                        src="/static/images/profile/avatar1.png"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <!--left col-->
+
+                <ul class="list-group">
+                    <li class="list-group-item text-muted">Profile</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span>
+                        ssass122111</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Prepared
+                                Orders</strong></span> 00</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Real
+                                name</strong></span>Tempqq</li>
+
+                </ul>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
+                    <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125
+                    </li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78
+                    </li>
+                </ul>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Social Media</div>
+                    <div class="panel-body">
+                        <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i
+                            class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i
+                            class="fa fa-google-plus fa-2x"></i>
+                    </div>
+                </div>
+
+            </div>
+            <!--/col-3-->
+            <div class="col-sm-9">
+
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a href="#active-orders" data-toggle="tab">Active Orders</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <!--start of tab Active Cutomers-->
+                    <div class="tab-pane active" id="active-orders">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Item Name</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for order in order_info%}
+
+                                    <tr>
+                                        <td>00{{order.order_ID}}</td>
+                                        <td>{{order.name}}</td>
+                                        <td>0{{order.quantity}}</td>
+                                        {% if order.status=='PRNG'%}
+                                        <td>Preparing</td>
+                                        {% elif order.status=='PRPD'%}
+                                        <td>Prepared</td>
+                                        {%elif order.status=='OTKN'%}
+                                        <td>Order Taken</td>
+                                        {%else%}
+                                        <td>{{order.status}}</td>
+                                        {%endif%}
+                                        {%if order.status=='PRPD'%}
+                                        <td><button type="button" class="btn btn-info btn-sm">&nbsp &nbsp Check Status &nbsp &nbsp</button>
+                                        </td>
+                                        {%elif order.status=='OTKN'%}
+                                        <td><button type="button" class="btn btn-warning btn-sm">Mark As Preparing</button>
+                                        </td>
+                                        {%elif order.status=='PRNG'%}
+                                        <td><button type="button" class="btn btn-success btn-sm">Mark As Prepared</button></td>
+                                        </td>
+                                        {%endif%}
+                                    </tr>
+
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4 text-center">
+                                    <ul class="pagination" id="myPager"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/table-resp-->
+
+                        <hr>
+
+                    </div>
+                    <!--/tab-pane-->
+            </div>
+            <!--/tab-content-->
+
+        </div>
+        <!--/col-9-->
+    </div>
+    <!--/row-->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".act_cust").click(function () {
+                var id = $(this).attr('id');
+                var url = '/service/newOrder/customerID/' + id;
+                location.href = url;
+
+            });
+            $('#new_cus_btn').click(function () {
+                $.ajax({
+                    url: "/getVacantTables", success: function (result) {
+                        data = JSON.parse(result)
+                        let element = ''
+                        data.forEach(function (item) {
+                            element = element + " <option>" + item.table_ID + "</option> "
+                        });
+                        $('#add-cust-dropdown').html(element)
+
+                    }
+                });
+
+            });
+
+
+            //  document end
+        });
+
+
+    </script>
+</body>
+
+</html>

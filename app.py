@@ -1,6 +1,7 @@
 from typing import ItemsView
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging,jsonify,make_response
 #from data import Articles
+import json
 from flask_mysqldb import MySQL
 from werkzeug.utils import html
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
@@ -10,15 +11,15 @@ from functools import wraps
 app = Flask(__name__)
 
 # Config MySQL
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'app'
-app.config['MYSQL_PASSWORD'] = 'app1234'
+app.config['MYSQL_HOST'] = 'mysql-instance1.ctrffvygguml.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = '04812340484'
 app.config['MYSQL_DB'] = 'ftserve'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # init MYSQL
-mysql = MySQL(app)
-
+mysql = MySQL()
+mysql.init_app(app)
 
 #Login Form (Main)
 @app.route('/login',methods=['GET','POST'])
@@ -26,23 +27,22 @@ def login():
     if request.method == 'POST':
         username=request.form['username']
         password=request.form['password']
-        cur=mysql.connection.cursor()
+        cur = mysql.connection.cursor()
         result = cur.execute("SELECT * FROM users WHERE user_name= %s ",[username])
-        
-        if result > 0:
-            record = cur.fetchone()
+        record = cur.fetchone()
+        if result>0:
             passwordx = record['password']
             #if password correct
             if passwordx == password:
                 #if it is service
                 if record['type'] == 'service':
-                    session['type'] = record['type']
+                    session['type'] = 'service'
                     session['user_name']=username
                     return redirect(url_for('service'))
-                elif record['type'] == 'chef':
-                    session['type'] = record['type']
+                elif record['type'] == 'back-house':
+                    session['type'] = 'back-house'
                     session['user_name']=username
-                    return redirect(url_for('chef'))
+                    return redirect(url_for('back_house'))
                 elif record['type'] == 'accounts':
                     session['user_name']=username
                     return redirect(url_for('accounts'))
@@ -106,11 +106,23 @@ def new_order(id,msg=None):
         mysql.connection.commit()
         return redirect(url_for('new_order',id=id,msg='Success'))
 
+#back of house home page
+@app.route('/back-house',methods=['GET'])
+def back_house():
+    cur=mysql.connection.cursor()
+    result = cur.execute("Select o.order_ID,i.name,o.quantity,o.status from orders o inner join items i on o.item_ID=i.item_ID where o.status in ('OTkN','PRNG','PRPD')")
+    order_info=cur.fetchall()
+    return render_template('/back-of-house/back_house_hompage.html',order_info=order_info)
+   
+
 # api for info
 @app.route('/getVacantTables')
 def vacant_tables():
     cur = mysql.connection.cursor()
     result=cur.execute("select * from tables where status='VA' ")
+    records=json.dumps(cur.fetchall())
+    
+    return jsonify(records)
 
 #main
 if __name__ == '__main__':
