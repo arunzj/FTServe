@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Service</title>
@@ -8,182 +9,208 @@
     <link rel="icon" href="/static/images/favicon.png">
     <!-- <link href="/static/service_hom/service-homepage.css" rel="stylesheet"> -->
 </head>
+
 <body>
-<!-- navbar start-->
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#active-orders">FT-Serve</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Link</a></li>
-      <li><a href="#">Link</a></li>
-    </ul>
-    <button id="new_cus_btn" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#customer_modal">New Customer</button>
-  </div>
-</nav>
-<!-- navbar end-->
-<!--Modal begining-->
-<div class="modal fade" id="customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="customer_modal_title"><b>Add New Customer</b></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group" style="width:100px">
-                <label for="add-customer-modal">Select Table</label>
-                <select class="form-control" id="add-cust-dropdown">
-                    
-
-                </select>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<!--Modal end-->
-
-<hr>
-<div class="container bootstrap snippets bootdey">
-    <div class="row">
-        <div class="col-sm-10">
-            <h1>{{session['user_name']}}</h1></div>
-        <div class="col-sm-2">
-            <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="/static/images/profile/avatar1.png"></a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <!--left col-->
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Profile</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{user.date_joined}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Orders Served</strong></span> {{serv_order.count}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span>{{user.name}}</li>
-
-            </ul>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-                <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
+    <!-- navbar start-->
+    <nav class="navbar navbar-inverse fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">FT-Serve</a>
             </div>
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li>&nbsp</li>
             </ul>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">Social Media</div>
-                <div class="panel-body">
-                    <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
+            <button id="new_cus_btn" class="btn btn-success navbar-btn" data-toggle="modal"
+                data-target="#customer_modal">New Customer</button>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{session['user_name']}}
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Page 1-1</a></li>
+                      <li><a href="#">Page 1-2</a></li>
+                      <li><a href="#">Page 1-3</a></li>
+                    </ul>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- navbar end-->
+    <!--Modal begining-->
+    <div class="modal fade" id="customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customer_modal_title"><b>Add New Customer</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" style="width:100px">
+                        <label for="add-customer-modal">Select Table</label>
+                        <select class="form-control" id="add-cust-dropdown">
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
-
         </div>
-        <!--/col-3-->
-        <div class="col-sm-9">
+    </div>
+    <!--Modal end-->
 
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#active-orders" data-toggle="tab">Active Orders</a></li>
-                <li><a href="#active-customers"  data-toggle="tab">Active Customers</a></li>
-            </ul>
+    <hr>
+    <div class="container bootstrap snippets bootdey">
+        <div class="row">
+            <div class="col-sm-10">
+                <h1>{{session['user_name']}}</h1>
+            </div>
+            <div class="col-sm-2">
+                <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive"
+                        src="/static/images/profile/avatar1.png"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <!--left col-->
 
-        <div class="tab-content">
-            <!--start of tab Active Cutomers-->
-            <div class="tab-pane active" id="active-orders">
-                <div class="table-responsive">
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Item Name</th>
-        <th>Quantity</th>
-        <th>Table</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%for order in orders%}
-      
-      <tr>
-        <td>00{{order.order_ID}}</td>
-        <td>{{order.name}}</td>
-        <td>0{{order.quantity}}</td>
-        <td>T0{{order.table_ID}}</td>
-        {% if order.status=='PRNG'%}
-        <td>Preparing</td>
-        {% elif order.status=='PRPD'%}
-        <td>Prepared</td>
-        {%elif order.status=='OTKN'%}
-        <td>Order Taken</td>
-        {%else%}
-        <td>{{order.status}}</td>
-        {%endif%}
-        {%if order.status=='PRPD'%}
-        <td><button type="button" class="btn btn-success btn-sm">Mark Served</button></td>
-        {%elif order.status=='OTKN'%}
-        <td><button type="button" class="btn btn-danger btn-sm">Cancel Order</button></td>
-        {%else%}
-        <td><button type="button" class="btn btn-info btn-sm">Check Status</button></td></td>
-        {%endif%}
-      </tr>
-    
-      {%endfor%}
-    </tbody>
-  </table>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-4 text-center">
-                                <ul class="pagination" id="myPager"></ul>
+                <ul class="list-group">
+                    <li class="list-group-item text-muted">Profile</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span>
+                        {{user.date_joined}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Orders Served</strong></span>
+                        {{serv_order.count}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Real
+                                name</strong></span>{{user.name}}</li>
+
+                </ul>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
+                    <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125
+                    </li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78
+                    </li>
+                </ul>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Social Media</div>
+                    <div class="panel-body">
+                        <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i
+                            class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i
+                            class="fa fa-google-plus fa-2x"></i>
+                    </div>
+                </div>
+
+            </div>
+            <!--/col-3-->
+            <div class="col-sm-9">
+
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a href="#active-orders" data-toggle="tab">Active Orders</a></li>
+                    <li><a href="#active-customers" data-toggle="tab">Active Customers</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <!--start of tab Active Cutomers-->
+                    <div class="tab-pane active" id="active-orders">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Item Name</th>
+                                        <th>Quantity</th>
+                                        <th>Table</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for order in orders%}
+
+                                    <tr>
+                                        <td>00{{order.order_ID}}</td>
+                                        <td>{{order.item_ID}}</td>
+                                        <td>0{{order.quantity}}</td>
+                                        <td>T0{{order.table_ID}}</td>
+                                        {% if order.status=='PRNG'%}
+                                        <td>Preparing</td>
+                                        {% elif order.status=='PRPD'%}
+                                        <td>Prepared</td>
+                                        {%elif order.status=='OTKN'%}
+                                        <td>Order Taken</td>
+                                        {%else%}
+                                        <td>{{order.status}}</td>
+                                        {%endif%}
+                                        {%if order.status=='PRPD'%}
+                                        <td><button type="button" class="btn btn-success btn-sm">Mark Served</button>
+                                        </td>
+                                        {%elif order.status=='OTKN'%}
+                                        <td><button type="button" class="btn btn-danger btn-sm">Cancel Order</button>
+                                        </td>
+                                        {%else%}
+                                        <td><button type="button" class="btn btn-info btn-sm">Check Status</button></td>
+                                        </td>
+                                        {%endif%}
+                                    </tr>
+
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4 text-center">
+                                    <ul class="pagination" id="myPager"></ul>
+                                </div>
                             </div>
                         </div>
+                        <!--/table-resp-->
+
+                        <hr>
+
                     </div>
-                    <!--/table-resp-->
-
-                    <hr>
-
-                </div>
-                <!--/tab-pane-->
-                <!--start of tab active customers-->
-                <div class="tab-pane" id="active-customers">
-                    <div class="tab-pane active" id="active-customers">
-                        <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Customer ID</th>
-                <th>Table ID</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%for customer in customers%}
-              <tr id='{{customer.customer_ID}}' class="act_cust">
-                <td>00{{customer.customer_ID}}</td>
-                <td>T0{{customer.table_ID}}</td>
-                {% if customer.status=='AC'%}
-                <td>Active</td>
-                {%else%}
-                <td>Inactive</td>
-                {%endif%}
-              </tr>
-              {%endfor%}
-            </tbody>
-          </table>
+                    <!--/tab-pane-->
+                    <!--start of tab active customers-->
+                    <div class="tab-pane" id="active-customers">
+                        <div class="tab-pane active" id="active-customers">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer ID</th>
+                                            <th>Table ID</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for customer in customers%}
+                                        <tr id='{{customer.customer_ID}}' class="act_cust">
+                                            <td>00{{customer.customer_ID}}</td>
+                                            <td>T0{{customer.table_ID}}</td>
+                                            {% if customer.status=='AC'%}
+                                            <td>Active</td>
+                                            {%else%}
+                                            <td>Inactive</td>
+                                            {%endif%}
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-4 col-md-offset-4 text-center">
@@ -192,131 +219,54 @@
                                 </div>
                             </div>
                             <!--/table-resp-->
-        
+
                             <hr>
-        
-                        </div>
-                   
 
+                        </div>
+
+
+                    </div>
+                    <!--/tab-pane-->
                 </div>
-                <!--/tab-pane-->
-                <div class="tab-pane" id="settings">
-
-                    <hr>
-                    <form class="form" action="##" method="post" id="registrationForm">
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="first_name">
-                                    <h4>First name</h4></label>
-                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="last_name">
-                                    <h4>Last name</h4></label>
-                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="phone">
-                                    <h4>Phone</h4></label>
-                                <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="mobile">
-                                    <h4>Mobile</h4></label>
-                                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="email">
-                                    <h4>Email</h4></label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="email">
-                                    <h4>Location</h4></label>
-                                <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="password">
-                                    <h4>Password</h4></label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="password2">
-                                    <h4>Verify</h4></label>
-                                <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <br>
-                                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <!--/tab-content-->
 
             </div>
-            <!--/tab-pane-->
+            <!--/col-9-->
         </div>
-        <!--/tab-content-->
+        <!--/row-->
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <script type="text/javascript">
 
-    </div>
-    <!--/col-9-->
-</div>
-<!--/row-->
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+            $(document).ready(function () {
+                $(".act_cust").click(function () {
+                    var id = $(this).attr('id');
+                    var url = '/service/newOrder/customerID/' + id;
+                    location.href = url;
 
-$(document).ready(function(){
-	     $(".act_cust").click(function(){
-            var id = $(this).attr('id');
-            var url = '/service/newOrder/customerID/'+id;
-            location.href=url;
-
-         });
-         $('#new_cus_btn').click(function(){
-            $.ajax({url: "/getVacantTables", success: function(result){
-                data=JSON.parse(result)
-                let element=''
-                data.forEach(function (item) {
-                    element=element+" <option>"+item.table_ID+"</option> "
                 });
-                $('#add-cust-dropdown').html(element)
+                $('#new_cus_btn').click(function () {
+                    $.ajax({
+                        url: "/getVacantTables", success: function (result) {
+                            data = JSON.parse(result)
+                            let element = ''
+                            data.forEach(function (item) {
+                                element = element + " <option>" + item.table_ID + "</option> "
+                            });
+                            $('#add-cust-dropdown').html(element)
 
-            }});
+                        }
+                    });
 
-        });
-
-
-        //  document end
-        });
+                });
 
 
-</script>
+                //  document end
+            });
+
+
+        </script>
 </body>
+
 </html>

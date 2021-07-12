@@ -43,9 +43,9 @@ def login():
                     session['type'] = 'back-house'
                     session['user_name']=username
                     return redirect(url_for('back_house'))
-                elif record['type'] == 'accounts':
+                elif record['type'] == 'billing':
                     session['user_name']=username
-                    return redirect(url_for('accounts'))
+                    return redirect(url_for('billing'))
                 else:
                     return 'Under Construction'
         #if password incorrect   
@@ -59,26 +59,28 @@ def login():
  
     return render_template('index.html')
 
+#default endpoint
 @app.route('/',methods=['GET'])
 def index():
     return redirect(url_for('login'))
 
-
+# Catalogue endpoint
 @app.route('/catalogue/category/<string:id>',methods=['GET'])
 def menu(id):
     cur = mysql.connection.cursor()
     result=cur.execute("select * from items where category=%s",[id])
     items=cur.fetchall()
     return render_template('catalogue/catalogue.html',items=items)
-
+#default end point for catalogue
 @app.route('/catalogue/category',methods=['GET'])
 def menu_default():
     return redirect(url_for('menu',id='starter'))
 
+#Homepage for Service
 @app.route('/service',methods=['GET'])
 def service():
     cur=mysql.connection.cursor()
-    result = cur.execute(" SELECT o.order_ID,i.name,t.table_ID,o.status,o.quantity FROM customers c INNER JOIN orders o ON c.customer_ID=o.customer_ID INNER JOIN  tables t ON c.table_ID=t.table_ID INNER JOIN items i ON o.item_ID=i.item_ID WHERE c.status='AC' and o.status!='SRVD' ")
+    result = cur.execute(" SELECT o.order_ID,o.item_ID,t.table_ID,o.status,o.quantity FROM customers c INNER JOIN orders o ON c.customer_ID=o.customer_ID INNER JOIN  tables t ON c.table_ID=t.table_ID WHERE c.status='AC' and o.status!='SRVD' ")
     orders=cur.fetchall()
     result = cur.execute("SELECT * FROM users WHERE user_name=%s",[session['user_name']])
     user=cur.fetchone()
@@ -88,6 +90,7 @@ def service():
     serv_order=cur.fetchone()
     return render_template('service/service_hompage.html',orders=orders,user=user,customers=customers,serv_order=serv_order)
 
+#end point for adding new order
 @app.route('/service/newOrder/customerID/<string:id>',methods=['GET','POST'])
 def new_order(id,msg=None):
     cur = mysql.connection.cursor()
@@ -112,16 +115,30 @@ def back_house():
     cur=mysql.connection.cursor()
     result = cur.execute("Select o.order_ID,i.name,o.quantity,o.status from orders o inner join items i on o.item_ID=i.item_ID where o.status in ('OTkN','PRNG','PRPD')")
     order_info=cur.fetchall()
-    return render_template('/back-of-house/back_house_hompage.html',order_info=order_info)
+    return render_template('/back-of-house/back-house-homepage.html',order_info=order_info)
    
+#Homepage for Billing'
+@app.route('/billing',methods=['GET'])
+def billing():
+    cur=mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM ftserve.bills")
+    bills=cur.fetchall()
+    return render_template('/billing/billing-homepage.html',bills=bills)
 
-# api for info
+# api for table-info
 @app.route('/getVacantTables')
 def vacant_tables():
     cur = mysql.connection.cursor()
     result=cur.execute("select * from tables where status='VA' ")
     records=json.dumps(cur.fetchall())
-    
+    return jsonify(records)
+
+#api for order details for customers
+@app.route('/getOrdersByCustomerID/customerID/<string:customer_ID>')
+def customer_orders(customer_ID):
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from orders where customer_ID=%s",[customer_ID])
+    records=json.dumps(cur.fetchall(),sort_keys=True, default=str)
     return jsonify(records)
 
 #main
