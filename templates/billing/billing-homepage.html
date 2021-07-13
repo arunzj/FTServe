@@ -10,7 +10,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="static/images/favicon.png" />
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="static/css/styles-billing.css" rel="stylesheet" />
 </head>
@@ -40,7 +40,7 @@
                         </ul>
                     </li>
                 </ul>
-                
+
             </div>
         </div>
     </nav>
@@ -61,7 +61,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Bill details</h5>
-                    <button type="button" class="close" id="mod-close-btn" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close mod-close-btn" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -75,14 +75,14 @@
                                 <th scope="col">Amount</th>
                             </tr>
                         </thead>
-                        <tbody id="t-body">
+                        <tbody id="bill-body">
 
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Mark as Payed</button>
+                    <button type="button" class="btn btn-secondary mod-close-btn" data-dismiss="modal">Close</button>
+                    <button type="button" id="pay-btn" class="btn btn-success">Mark as Payed</button>
                 </div>
             </div>
         </div>
@@ -145,31 +145,38 @@
         $(document).ready(function () {
             $(".bill_btn").click(function () {
                 var id = $(this).attr('id');
-                let url='/getOrdersByCustomerID/customerID/'+id;
-                $.ajax({url: url, success: function(result){
-                    data=JSON.parse(result)
-                    let ele='';
-                    let count=1;
-                    let price=100;
-                    data.forEach(function (item) {
-                    ele=ele+'<tr><td>'+count+'</td><td>'+item.item_ID+'</td><td>X&nbsp'+item.quantity+'</td><td>'+price+'</td></tr>';
-                    price=price+10
-                    count=count+1;
-                });
-                    ele=ele+'<tr><td></td><td></td><td><b>Total:</b></td><td><s>$430</s></td></tr>';
-                    ele=ele+'<tr><td></td><td></td><td><b>Discount:</b></td><td>-$10</td></tr>';
-                    ele=ele+'<tr><td></td><td></td><td><b>Payable:</b></td><td>$420</td></tr>';
-                    $('#t-body').html(ele);
-                }});//ajax end
+                let url = '/getOrdersByCustomerID/customerID/' + id;
+                $.ajax({
+                    url: url, success: function (result) {
+                        data = JSON.parse(result)
+                        let ele = '';
+                        let count = 1;
+                        let total = 0;
+                        data.forEach(function (item) {
+                            ele = ele + '<tr><td>' + count + '</td><td>' + item.item_ID + '</td><td>X&nbsp' + item.quantity + '</td><td>$&nbsp' + item.price + '</td></tr>';
+                            total = total + parseInt(item.price);
+                            count = count + 1;
+                        });
+                        ele = ele + '<tr><td></td><td></td><td><b>Payable Amount:</b></td><td>$&nbsp<b>' + total + '<b></td></tr>';
+                        $('#bill-body').html(ele);
 
+                    }
+                });//ajax end
 
                 $("#bill-modal").modal('show');
 
             });
-            
-            $("#mod-close-btn").click(function () {
+            //close action for btn in modal
+            $(".mod-close-btn").click(function () {
                 $("#bill-modal").modal('hide');
             });
+            //confirm btn
+            $('#pay-btn').click(function(){
+                let new_cl='btn btn-warning buttonload';
+                $(this).attr('class',new_cl);
+                let loader='Confirm &nbsp<i class="fa fa-circle-o-notch fa-spin"></i>'
+                $(this).html(loader)
+            });//end confirm btn
 
         });
 

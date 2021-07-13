@@ -1,6 +1,11 @@
-Master username
-admin
-Master password
-04812340484
-Endpoint
-mysql-instance1.ctrffvygguml.us-east-1.rds.amazonaws.com
+MySQl
+-----
+Master username: admin
+Master password: 04812340484
+Endpoint: mysql-instance1.ctrffvygguml.us-east-1.rds.amazonaws.com
+
+strapi
+-----
+Ajai Jose
+Qwerty_1234
+ajaijose@ftserve.com

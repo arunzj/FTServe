@@ -46,8 +46,11 @@ def login():
                 elif record['type'] == 'billing':
                     session['user_name']=username
                     return redirect(url_for('billing'))
+                elif record['type']=='admin':
+                    session['user_name']=username
+                    return redirect(url_for('admin'))
                 else:
-                    return 'Under Construction'
+                    return 'something went wrong'
         #if password incorrect   
             else:
                 msg='wrong password'
@@ -121,12 +124,25 @@ def back_house():
 @app.route('/billing',methods=['GET'])
 def billing():
     cur=mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM ftserve.bills")
+    result = cur.execute("SELECT * FROM bills")
     bills=cur.fetchall()
     return render_template('/billing/billing-homepage.html',bills=bills)
 
+#Homepage for Admin
+@app.route('/admin',methods=['GET'])
+def admin():
+    return render_template('/admin/admin-homepage.html')
+
+# api for getting all tables
+@app.route('/api/getAllTables')
+def all_tables():
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from tables order by table_ID desc")
+    records=json.dumps(cur.fetchall())
+    return jsonify(records)
+
 # api for table-info
-@app.route('/getVacantTables')
+@app.route('/api/getVacantTables')
 def vacant_tables():
     cur = mysql.connection.cursor()
     result=cur.execute("select * from tables where status='VA' ")
@@ -134,12 +150,39 @@ def vacant_tables():
     return jsonify(records)
 
 #api for order details for customers
-@app.route('/getOrdersByCustomerID/customerID/<string:customer_ID>')
+@app.route('/api/getOrdersByCustomerID/customerID/<string:customer_ID>')
 def customer_orders(customer_ID):
     cur = mysql.connection.cursor()
-    result=cur.execute("select * from orders where customer_ID=%s",[customer_ID])
+    result=cur.execute("select o.order_ID,o.item_ID,o.quantity,o.customer_ID,o.status,o.order_time,i.price from orders o inner join items i on o.item_ID = i.item_ID where o.customer_ID=%s",[customer_ID])
     records=json.dumps(cur.fetchall(),sort_keys=True, default=str)
     return jsonify(records)
+
+#api for getting all users
+@app.route('/api/getUsers')
+def get_users():
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from users where user_name!='admin' ")
+    records=json.dumps(cur.fetchall(),sort_keys=True, default=str)
+    return jsonify(records)
+
+#api for getting all items
+@app.route('/api/getItems')
+def get_items():
+    cur = mysql.connection.cursor()
+    result=cur.execute("select * from items")
+    records=json.dumps(cur.fetchall(),sort_keys=True, default=str)
+    return jsonify(records)
+
+
+#api for getting all items
+@app.route('/api/createTable',methods=['POST'])
+def create_table():
+    cur = mysql.connection.cursor()
+    result=cur.execute('insert into tables(status) values("AV")')
+    mysql.connection.commit()
+    response={'response-code':200,
+    'response-status':'success'} 
+    return jsonify(response)
 
 #main
 if __name__ == '__main__':
